@@ -4,25 +4,32 @@ export const SlotFillContext = React.createContext({});
 
 export class SlotFillManager {
   slotsAndFills = new Map();
+
   subscribers = [];
 
-  setFillForSlot = (slotId, renderCallback = () => false) => {
-    const fillForSlot = this.slotsAndFills.get(slotId);
-
-    if (fillForSlot) {
-      throw new Error(
-        `SlotAndFillManager: You've already registered a Fill for the following slotId: ${slotId}`,
-      );
+  setFills = (slotId, renderCallback) => {
+    const fills = this.slotsAndFills.get(slotId);
+    if (fills) {
+      this.slotsAndFills.set(slotId, [...fills, renderCallback]);
+    } else {
+      this.slotsAndFills.set(slotId, [renderCallback]);
     }
+  };
 
-    this.slotsAndFills.set(slotId, renderCallback);
+  setFillForSlot = (slotId, renderCallback = () => false) => {
+    this.setFills(slotId, renderCallback);
     this.notify(slotId);
   };
 
   getFillForSlot = (slotId) => {
     const fillById = this.slotsAndFills.get(slotId);
+    if (!fillById) {
+      return () => false;
+    }
 
-    return !fillById ? () => false : fillById;
+    return () => (
+      <React.Fragment>{fillById.map((fill) => fill())}</React.Fragment>
+    );
   };
 
   subscribe = (slotId, callback) => {
@@ -30,6 +37,11 @@ export class SlotFillManager {
   };
 
   unsubscribe = (slotId, slotIndex) => {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `SlotAndFillManager: Unsubscribe callback for slotId ${slotId} and slotIndex ${slotIndex}`,
+    );
+
     this.subscribers = this.subscribers.filter(
       (subscriber, index) =>
         subscriber.slotId === slotId && index === slotIndex,

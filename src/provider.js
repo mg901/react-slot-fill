@@ -1,5 +1,6 @@
 import React from 'react';
-import { SlotFillContext, SlotFillManager } from '../context';
+import { node } from 'prop-types';
+import { SlotFillContext, SlotFillManager } from './context';
 
 export const SlotFillProvider = ({ children }) => (
   <SlotFillContext.Provider value={new SlotFillManager()}>
@@ -9,4 +10,8 @@ export const SlotFillProvider = ({ children }) => (
 
 SlotFillProvider.defaultProps = {
   children: [],
+};
+
+SlotFillProvider.propTypes = {
+  children: node,
 };

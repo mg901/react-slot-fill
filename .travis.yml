@@ -1,0 +1,30 @@
+language: node_js
+cache: yarn
+node_js:
+- node
+- '10'
+- '8'
+os:
+- linux
+- osx
+branches:
+  only:
+  - master
+  - "/^greenkeeper/.*$/"
+script:
+- npm test
+after_success:
+- yarn coverage
+jobs:
+  include:
+  - stage: release
+    if: branch IN (master, next)
+    node_js: node
+    script:
+    - npm run build
+    - npx semantic-release
+    env:
+    - secure: IgRUi3Dew2cTSbsYmhgUWGFx5w8HswhWscIoKCvfsT7FMYeuVmuPqzpztAw7VFbzGBjkQP+hsKI/F3Ih0zh4koAcIt4HGEMINfnF52q4Q2gxD44SwUfUA085pOujkO5T4mne9m5LM3mHrStX8yJpEGDqQKp+moudWtga9VzehM7kFDL0SPwgDK2Va30NQQrkeh7fla1YQUmmlFOKSlGNYYQQkB6rToAn9YpcjXuSVy15UCJe9X5dFgfA4ILqFDAY5yJSxr7ymDuGayZoFPbbaQ6kjUk3NG1VBJAfaowF5WZ55E9IroCV8DzjHiR/rMLMdqfvH/OEYn+gqDSV0YGqnaApdX0dobI58ODMb+hw0P7y7lMw6+PnY8XYAS0A5hkrE5gOBle9O6QYCnX5NpKMZNfzPxETY0M/ZrPaWwSy+mS+1y9cuWdoJZlpllSBvN6t6LMxc+x4k7BVJxiFZTRGptfB/A2h9SDZ4yH5+nIY24uFUYWnqjSYIZMY+kzeflmySvJRMIEbVKkjR3mzsuNFwRwxFyS11rF6JqnahhcnnT4u/X0v5GdBdX8wxk2ZhplXMetOTkjh0FaFzcajkQeL8AcPRtNHGyfrJhdlsm8vf7N79k0JlVEuSAOCKtw5pp83bDCTSPeBqx2YOak02a9NR5Y0Ye6F9Fc6vMJfnzQy/e8=
+    - secure: SSWWM6roLsHi5W2vmRzXTw7ZZh3GQN3u3zZ0IaIdv9+TXNrHowqRPDRAzqsHeBiBqhPFf25ktyoMoRiWTBgK6moIdgZhgQu376sW2t5OGfoBftNFVlsd3FIe7G4QGS1tEHaWOwNmlENdX/c7R1VDU2TTyN7VpdPgh58C1m3CcgnrV6341lTIEh/Z1866dQfBbtdfdbvC4hL0kHyM8xtrQpGFmn0ZXhZFp2h64zYq8a4taEbHTuLGdpLpZF8Jr3KrjErybq9YloyqdzI1DKrBCOZm+r/DUvBjQtK4GItHWfQOz6LRsec3AF1tND4i5tku2/Ffyf4ws1Im2CkYbv03jE65VdXZ6inijv44wKTtFIJwtdkWV2OalzCZ2zQew5WtV7W9Fyv2QiBXo4JuD4jCYsMe1LHFctTYT65u57hubinai17Ok/h1A7+Dcp3Mi2365qkka2+jbYDK0S21aq5ZAyLuJncJee3RPfGDa1K/bypG5pL/SJN8lSBD4b7t7DYP/gVj6ViaA9VG2Aoiy0J0TN1YdLfe2MWkoNqJmkzHE0Q2/ifP3wARavTW9SPMytUhK77MVgqhN3kqbhspJa1KEhBO/lSzDywmv9kh42dhT17Exo+KYjlTIOJrW1jVAAtNXuzMh4k+BN+cMDCLnUfvnk1dqA8skrx6A0K9g5NGoyI=
+  
+   
