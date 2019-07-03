@@ -1,0 +1,26 @@
+language: node_js
+cache: yarn
+node_js:
+  - node
+  - '10'
+  - '8'
+os:
+  - linux
+  - osx
+branches:
+  only:
+    - master
+    - '/^greenkeeper/.*$/'
+script:
+  - npm test
+after_success:
+  - yarn coverage
+jobs:
+  include:
+    - stage: release
+      if: branch IN (master, next)
+      node_js: node
+      script:
+        - npm run build
+        - npx semantic-release
+      env:
