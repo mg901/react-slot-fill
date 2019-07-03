@@ -1,15 +1,42 @@
 {
   "name": "@ips/react-slot-fill",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/lib/index.js",
+  "module": "dist/es/index.js",
   "license": "MIT",
   "scripts": {
     "start": "start-storybook -p 6006",
-    "clean": "cross-env rifraf dist",
+    "build": "npm run clean && npx rollup -c",
+    "build:ts-types": "npm run build:ts-types:cjs && npm run build:ts-types:es",
+    "build:flow-types": "npm run build:flow-types:cjs && npm run build:flow-types:es",
+    "build:ts-types:cjs": "cross-env cpx src/index.d.ts dist/lib",
+    "build:ts-types:es": "cross-env cpx src/index.d.ts dist/es",
+    "build:flow-types:cjs": "cross-env cpx src/index.js.flow dist/lib",
+    "build:flow-types:es": "cross-env cpx src/index.js.flow dist/es",
+    "clean": "cross-env rimraf lib",
     "commit": "cross-env git-cz",
     "lint": "cross-env eslint --fix .",
     "pretty": "cross-env prettier './**/**/**.{js,json,md}' --write"
   },
+  "author": "Maxim Alyoshin <mgreen097@gmail.com> (https://github.com/mg901)",
+  "homepage": "https://github.com/mg901/react-slot-fill#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mg901/react-slot-fill.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mg901/react-slot-fill/issues"
+  },
+  "keywords": [
+    "react",
+    "slot",
+    "fill",
+    "di",
+    "dependency injection"
+  ],
+  "files": [
+    "lib"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -17,6 +44,10 @@
     "react": "^16.8.6"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@semantic-release/changelog": "^3.0.4",
@@ -31,17 +62,24 @@
     "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
     "commitizen": "^3.1.1",
+    "cpx": "^1.5.0",
     "cross-env": "^5.2.0",
     "eslint": "5.3.0",
     "eslint-config-airbnb": "17.1.1",
+    "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.2",
     "husky": "^3.0.0",
     "lint-staged": "^9.0.2",
     "prettier": "^1.18.2",
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "rimraf": "^2.6.3",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.0.1",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "storybook": "^1.0.0"
   }
 }
