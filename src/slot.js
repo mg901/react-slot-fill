@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { string } from 'prop-types';
 import { SlotFillContext } from './context';
 
 const useForceUpdate = () => {
@@ -31,10 +32,12 @@ export const Slot = ({ name, ...props }) => {
     });
   }
 
-  if (!name) throw new Error('Slot: You forget to pass id to <Slot>');
-
   const renderCallback = ctx.getFillForSlot(name);
   const children = renderCallback();
 
   return !children ? false : React.cloneElement(children, props);
+};
+
+Slot.propTypes = {
+  name: string.isRequired,
 };

@@ -1,7 +1,7 @@
 import React from 'react';
+import { node } from 'prop-types';
 import { SlotFillContext, SlotFillManager } from './context';
 
-// eslint-disable-next-line react/prop-types
 export const SlotFillProvider = ({ children }) => (
   <SlotFillContext.Provider value={new SlotFillManager()}>
     {children}
@@ -10,4 +10,8 @@ export const SlotFillProvider = ({ children }) => (
 
 SlotFillProvider.defaultProps = {
   children: [],
+};
+
+SlotFillProvider.propTypes = {
+  children: node,
 };

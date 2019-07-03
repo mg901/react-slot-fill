@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { string, node } from 'prop-types';
 import { SlotFillContext } from './context';
 
 export const Fill = ({ name, children }) => {
@@ -8,16 +9,13 @@ export const Fill = ({ name, children }) => {
       'Fill: context is null or undefined. You need to wrap your App with <SlotAndFillProvider>.',
     );
   } else {
-    if (!name) {
-      throw new Error('Fill: id is null or undefined.');
-    }
-
-    if (Array.isArray(children) && children.length === 0) {
-      throw new Error('Fill: children array is empty.');
-    }
-
     ctx.setFillForSlot(name, () => children);
   }
 
   return false;
+};
+
+Fill.propTypes = {
+  name: string.isRequired,
+  children: node.isRequired,
 };
