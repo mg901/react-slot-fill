@@ -38,10 +38,26 @@ const Toolbar = (props) => (
 
 export default Toolbar;
 
+// single Fill
 Toolbar.Item = (props) => (
   <Fill name="Toolbar.Item">
     <button>{props.label}</button>
   </Fill>
+);
+
+// or multiple Fill
+Toolbar.Item = (props) => (
+  <>
+    <Fill name="Toolbar.Item">
+      <button>{props.label}</button>
+    </Fill>
+    <Fill name="Toolbar.Item">
+      <button>{props.label}</button>
+    </Fill>
+    <Fill name="Toolbar.Item">
+      <button>{props.label}</button>
+    </Fill>
+  </>
 );
 ```
 
@@ -54,7 +70,7 @@ import Toolbar from './Toolbar';
 const Feature = () => <Toolbar.Item label="My Feature!" />;
 ```
 
-`app.js
+`app.js`
 
 ```js
 import React from 'react';
@@ -74,8 +90,6 @@ const App = () => (
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
-## API
-
 ### Props
 
 `Slot` and `Fill` components use the same props, which are the following ones:
@@ -83,11 +97,6 @@ ReactDOM.render(<App />, document.getElementById('root'));
 | Properties | Types  | Default Value | Description                           |
 | ---------- | ------ | ------------- | ------------------------------------- |
 | name       | string | none          | Determines the name of the Slot/Fill. |
-
-## TODO
-
-- [x] Support for passing props from Fill to Slot.
-- [x] Support for multiple Fill for one Slot.
 
 ## License
 
