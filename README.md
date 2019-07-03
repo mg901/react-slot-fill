@@ -100,4 +100,8 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 ## License
 
-Distributed under the **MIT license**. See [LICENSE](https://github.com/BlackBoxVision/react-slot-fill/blob/master/LICENSE) for more information.
+MIT License
+
+Copyright (c) 2018-2019 [Maxim Alyoshin](https://github.com/mg901).
+
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/mg901/react-slot-fill/blob/master/LICENCE) file for details.
