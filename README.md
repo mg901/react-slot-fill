@@ -28,7 +28,7 @@ The usage is really simple:
 
 ```js
 import React from 'react';
-import { Slot, Fill } from '@ips-frontend/react-slot-fill';
+import { Slot, Fill } from '@mg901/react-slot-fill';
 
 const Toolbar = (props) => (
   <div>
@@ -75,7 +75,7 @@ const Feature = () => <Toolbar.Item label="My Feature!" />;
 ```js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from '@ips-frontend/react-slot-fill';
+import { Provider } from '@mg901/react-slot-fill';
 
 import Toolbar from './Toolbar';
 import Feature from './Feature';
