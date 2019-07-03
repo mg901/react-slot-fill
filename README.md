@@ -1,5 +1,7 @@
 # React Slot Fill
 
+![Travis (.org) branch](https://img.shields.io/travis/mg901/react-slot-fill/master.svg?style=flat-square)
+
 ## Install
 
 You can install this library via `npm` or `yarn`.
