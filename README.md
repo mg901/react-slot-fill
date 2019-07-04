@@ -32,7 +32,7 @@ The usage is really simple:
 import React from 'react';
 import { Slot, Fill } from '@mg901/react-slot-fill';
 
-const Toolbar = (props) => (
+const Toolbar = () => (
   <div>
     <Slot name="Toolbar.Item" />
   </div>
@@ -41,23 +41,23 @@ const Toolbar = (props) => (
 export default Toolbar;
 
 // single Fill
-Toolbar.Item = (props) => (
+Toolbar.Item = ({ label }) => (
   <Fill name="Toolbar.Item">
-    <button>{props.label}</button>
+    <button>{label}</button>
   </Fill>
 );
 
 // or multiple Fill
-Toolbar.Item = (props) => (
+Toolbar.Item = ({ label }) => (
   <>
     <Fill name="Toolbar.Item">
-      <button>{props.label}</button>
+      <button>{label}</button>
     </Fill>
     <Fill name="Toolbar.Item">
-      <button>{props.label}</button>
+      <button>{label}</button>
     </Fill>
     <Fill name="Toolbar.Item">
-      <button>{props.label}</button>
+      <button>{label}</button>
     </Fill>
   </>
 );
