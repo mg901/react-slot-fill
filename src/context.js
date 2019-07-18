@@ -3,52 +3,64 @@ import React from 'react';
 export const SlotFillContext = React.createContext({});
 
 export class SlotFillManager {
-  slotsAndFills = new Map();
+  allFills = new Map();
 
-  subscribers = [];
+  timers = {};
 
-  setFills = (slotId, renderCallback) => {
-    const fills = this.slotsAndFills.get(slotId);
+  slotsSubscribers = {};
 
-    if (fills) {
-      this.slotsAndFills.set(slotId, [...fills, renderCallback]);
-    } else {
-      this.slotsAndFills.set(slotId, [renderCallback]);
-    }
-  };
+  setFill = ({ name, id, content }) => {
+    const hasFill = this.allFills.has(name);
+    const currentFill = this.allFills.get(name);
 
-  setFillForSlot = (slotId, renderCallback = () => false) => {
-    this.setFills(slotId, renderCallback);
-    this.notify(slotId);
-  };
-
-  getFillForSlot = (slotId) => {
-    const fillById = this.slotsAndFills.get(slotId);
-    if (!fillById) {
-      return () => false;
-    }
-
-    return () => <>{fillById.map((fill) => fill())}</>;
-  };
-
-  subscribe = (slotId, callback) => {
-    this.subscribers = [...this.subscribers, { slotId, callback }];
-  };
-
-  unsubscribe = (slotId, slotIndex) => {
-    this.subscribers = this.subscribers.filter(
-      (subscriber, index) =>
-        subscriber.slotId !== slotId && index !== slotIndex,
-    );
-  };
-
-  notify = (slotId) => {
-    this.subscribers.forEach((subscriber, index) => {
-      if (subscriber.slotId !== slotId) {
-        return;
+    if (hasFill) {
+      if (!currentFill[id]) {
+        this.allFills.set(name, { ...currentFill, [id]: content });
       }
+    } else {
+      this.allFills.set(name, { [id]: content });
+    }
 
-      subscriber.callback(index);
-    });
+    /* Waits for the next fill call. 
+      If it is, we delete the previous timeout, 
+      if we don’t render it, slot by the last parameter.
+    */
+    if (this.timers[name]) {
+      clearTimeout(this.timers[name]);
+    }
+
+    this.timers[name] = setTimeout(() => {
+      this.notify(name);
+    }, 100);
+  };
+
+  // Give fills to the slot.
+  getFillForSlot = (name) => {
+    const fillById = this.allFills.get(name);
+    if (!fillById) {
+      return false;
+    }
+
+    return <>{Object.values(fillById).map((render) => render())}</>;
+  };
+
+  // Unsubscribe from the function of the renderer to avoid memory leaks.
+  unsubscribe = (name) => {
+    delete this.slotsSubscribers[name];
+  };
+
+  // Save the name of the slot and the function for the renderer.
+  subscribe = (name, updateCallback) => {
+    this.slotsSubscribers = {
+      [name]: updateCallback,
+      ...this.slotsSubscribers,
+    };
+  };
+
+  // Render the outgoing slots (all fills).
+  notify = (name) => {
+    if (this.slotsSubscribers[name]) {
+      this.slotsSubscribers[name]();
+    }
   };
 }

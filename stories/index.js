@@ -11,17 +11,20 @@ const items = [
 ];
 
 const Item = ({ id, label, className }) => (
-  <Fill name="dynamic-demo">
-    <div key={id} className={className}>
-      {label}
-    </div>
+  <Fill name="dynamic-demo" id={id}>
+    <div className={className}>{label}</div>
   </Fill>
 );
 
 const Test = ({ data }) =>
-  data.map(({ id, label }) => (
-    <Item id={id} label={label} className={`block ${label}`} />
-  ));
+  data.map(({ id, label }) => {
+    console.log('wrap ids', id);
+    return (
+      <Fill name="dynamic-demo" id={id}>
+        <div className={`block ${label}`}>{label}</div>
+      </Fill>
+    );
+  });
 
 storiesOf('Slot-Fill', module)
   .add('simple-demo', () => (
@@ -29,13 +32,13 @@ storiesOf('Slot-Fill', module)
       <div className="wrap">
         <Slot name="simple-demo" />
         <>
-          <Fill name="simple-demo">
+          <Fill name="simple-demo" id="1">
             <div className="block red">Red Box</div>
           </Fill>
-          <Fill name="simple-demo">
+          <Fill name="simple-demo" id="2">
             <div className="block green">Green Box</div>
           </Fill>
-          <Fill name="simple-demo">
+          <Fill name="simple-demo" id="3">
             <div className="block pink">Pink Box</div>
           </Fill>
         </>

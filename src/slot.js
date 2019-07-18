@@ -2,15 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import { SlotFillContext } from './context';
 
 const useForceUpdate = () => {
-  const [value, set] = useState(true);
+  const [_, setIt] = useState(false);
 
-  return () => set(!value);
+  return () => setIt((val) => !val);
 };
 
 export const Slot = ({ name, ...props }) => {
-  const forceUpdate = useForceUpdate();
   const ctx = useContext(SlotFillContext);
-  let slotIndex = null;
+  const forceUpdate = useForceUpdate();
 
   useEffect(() => {
     if (!ctx || !ctx.getFillForSlot) {
@@ -19,24 +18,19 @@ export const Slot = ({ name, ...props }) => {
       );
     }
 
-    return () => {
-      if (slotIndex) {
-        ctx.unsubscribe(name, slotIndex);
-      }
-    };
+    return () => ctx.unsubscribe(name);
   });
 
+  // When all the fills came to re-render them in the slot.
   if (ctx.subscribe) {
-    ctx.subscribe(name, (slotIdx) => {
-      slotIndex = slotIdx;
+    ctx.subscribe(name, () => {
       forceUpdate();
     });
   }
 
   if (!name) throw new Error(`Slot: You forget to pass id to <Slot>`);
 
-  const renderCallback = ctx.getFillForSlot(name);
-  const children = renderCallback();
+  const children = ctx.getFillForSlot(name);
 
   return !children ? false : React.cloneElement(children, props);
 };
