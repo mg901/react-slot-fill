@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { string } from 'prop-types';
 import { SlotFillContext } from './context';
 
 const useForceUpdate = () => {
@@ -13,16 +12,18 @@ export const Slot = ({ name, ...props }) => {
   const ctx = useContext(SlotFillContext);
   let slotIndex = null;
 
-  useEffect(() => () => {
+  useEffect(() => {
     if (!ctx || !ctx.getFillForSlot) {
       throw new Error(
         'Slot: context is null or undefined. You need to wrap your App with <SlotAndFillProvider>.',
       );
     }
 
-    if (slotIndex) {
-      ctx.unsubscribe(name, slotIndex);
-    }
+    return () => {
+      if (slotIndex) {
+        ctx.unsubscribe(name, slotIndex);
+      }
+    };
   });
 
   if (ctx.subscribe) {
@@ -32,12 +33,10 @@ export const Slot = ({ name, ...props }) => {
     });
   }
 
+  if (!name) throw new Error(`Slot: You forget to pass id to <Slot>`);
+
   const renderCallback = ctx.getFillForSlot(name);
   const children = renderCallback();
 
   return !children ? false : React.cloneElement(children, props);
-};
-
-Slot.propTypes = {
-  name: string.isRequired,
 };

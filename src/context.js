@@ -9,6 +9,7 @@ export class SlotFillManager {
 
   setFills = (slotId, renderCallback) => {
     const fills = this.slotsAndFills.get(slotId);
+
     if (fills) {
       this.slotsAndFills.set(slotId, [...fills, renderCallback]);
     } else {
@@ -27,9 +28,7 @@ export class SlotFillManager {
       return () => false;
     }
 
-    return () => (
-      <React.Fragment>{fillById.map((fill) => fill())}</React.Fragment>
-    );
+    return () => <>{fillById.map((fill) => fill())}</>;
   };
 
   subscribe = (slotId, callback) => {
@@ -37,14 +36,9 @@ export class SlotFillManager {
   };
 
   unsubscribe = (slotId, slotIndex) => {
-    // eslint-disable-next-line no-console
-    console.warn(
-      `SlotAndFillManager: Unsubscribe callback for slotId ${slotId} and slotIndex ${slotIndex}`,
-    );
-
     this.subscribers = this.subscribers.filter(
       (subscriber, index) =>
-        subscriber.slotId === slotId && index === slotIndex,
+        subscriber.slotId !== slotId && index !== slotIndex,
     );
   };
 
