@@ -50,13 +50,13 @@ Toolbar.Item = ({ label }) => (
 // or multiple Fill
 Toolbar.Item = ({ label }) => (
   <>
-    <Fill name="Toolbar.Item">
+    <Fill name="Toolbar.Item" id="1">
       <button>{label}</button>
     </Fill>
-    <Fill name="Toolbar.Item">
+    <Fill name="Toolbar.Item" id="2">
       <button>{label}</button>
     </Fill>
-    <Fill name="Toolbar.Item">
+    <Fill name="Toolbar.Item" id="3">
       <button>{label}</button>
     </Fill>
   </>
@@ -92,13 +92,20 @@ const App = () => (
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
-### Props
+## API
 
-`Slot` and `Fill` components use the same props, which are the following ones:
+### Slot
 
-| Properties | Types  | Default Value | Description                           |
-| ---------- | ------ | ------------- | ------------------------------------- |
-| name       | string | none          | Determines the name of the Slot/Fill. |
+| Properties | Type   | Required | Default Value                    | Description |
+| ---------- | ------ | -------- | -------------------------------- | ----------- |
+| name       | string | false    | Determines the name of the Slot. |
+
+### Fill
+
+| Properties | Type             | Default Value | Description  |
+| ---------- | ---------------- | ------------- | ------------ |
+| name       | string           | none          | Name of Fill |
+| id         | string or number | none          | Unique id    |
 
 ## License
 
