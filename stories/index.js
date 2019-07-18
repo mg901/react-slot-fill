@@ -18,7 +18,6 @@ const Item = ({ id, label, className }) => (
 
 const Test = ({ data }) =>
   data.map(({ id, label }) => {
-    console.log('wrap ids', id);
     return (
       <Fill name="dynamic-demo" id={id}>
         <div className={`block ${label}`}>{label}</div>
