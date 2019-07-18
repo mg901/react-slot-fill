@@ -1,15 +1,21 @@
 import { useContext } from 'react';
 import { SlotFillContext } from './context';
 
-export const Fill = ({ name, children }) => {
+const isEmpty = (x) => x === null || x === undefined;
+
+export const Fill = ({ name, id, children }) => {
   const ctx = useContext(SlotFillContext);
 
-  if (!ctx || !ctx.setFillForSlot) {
+  if (!ctx || !ctx.setFill) {
     throw new Error(
       `Fill: context is null or undefined. You need to wrap your App with <SlotAndFillProvider>.`,
     );
   } else {
     if (!name) {
+      throw new Error('Fill: name is null or undefined.');
+    }
+
+    if (isEmpty(id)) {
       throw new Error('Fill: id is null or undefined.');
     }
 
@@ -17,7 +23,7 @@ export const Fill = ({ name, children }) => {
       throw new Error('Fill: children array is empty.');
     }
 
-    ctx.setFillForSlot(name, () => children);
+    ctx.setFill({ name, id, content: () => children });
   }
 
   return false;
