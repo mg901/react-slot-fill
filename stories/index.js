@@ -4,17 +4,39 @@ import React from 'react';
 import { Fill, Provider, Slot } from '../src';
 import './index.css';
 
+const mockFetchData = (ms) =>
+  new Promise((res) => setTimeout(() => res(['text1', 'text2', 'text3']), ms));
+
+const LoadingFills = () => {
+  const [arr, setArr] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const result = await mockFetchData(2000);
+      setArr(result);
+    };
+
+    fetchData();
+  }, []);
+
+  return arr.length > 0 ? (
+    <>
+      {arr.map((item, id) => (
+        <Fill key={item} name="loading-demo" id={id}>
+          {item}
+        </Fill>
+      ))}
+    </>
+  ) : (
+    false
+  );
+};
+
 const items = [
   { id: 0, label: 'red' },
   { id: 1, label: 'green' },
   { id: 2, label: 'pink' },
 ];
-
-const Item = ({ id, label, className }) => (
-  <Fill name="dynamic-demo" id={id}>
-    <div className={className}>{label}</div>
-  </Fill>
-);
 
 const Test = ({ data }) =>
   data.map(({ id, label }) => {
@@ -51,6 +73,14 @@ storiesOf('Slot-Fill', module)
         <div>
           <Test data={items} />
         </div>
+      </div>
+    </Provider>
+  ))
+  .add('loading elements', () => (
+    <Provider>
+      <div className="wrap">
+        <Slot name="loading-demo" />
+        <LoadingFills />
       </div>
     </Provider>
   ));

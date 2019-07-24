@@ -3,22 +3,21 @@ import React from 'react';
 export const SlotFillContext = React.createContext({});
 
 export class SlotFillManager {
-  allFills = new Map();
+  allFills = {};
 
   timers = {};
 
   slotsSubscribers = {};
 
   setFill = ({ name, id, content }) => {
-    const hasFill = this.allFills.has(name);
-    const currentFill = this.allFills.get(name);
+    const currentFill = this.allFills[name];
 
-    if (hasFill) {
+    if (currentFill) {
       if (!currentFill[id]) {
-        this.allFills.set(name, { ...currentFill, [id]: content });
+        this.allFills[name] = { ...currentFill, [id]: content };
       }
     } else {
-      this.allFills.set(name, { [id]: content });
+      this.allFills[name] = { [id]: content };
     }
 
     /* Waits for the next fill call. 
@@ -36,7 +35,7 @@ export class SlotFillManager {
 
   // Give fills to the slot.
   getFillForSlot = (name) => {
-    const fillById = this.allFills.get(name);
+    const fillById = this.allFills[name];
     if (!fillById) {
       return false;
     }
