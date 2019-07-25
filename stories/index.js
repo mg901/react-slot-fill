@@ -4,8 +4,14 @@ import React from 'react';
 import { Fill, Provider, Slot } from '../src';
 import './index.css';
 
+const items = [
+  { id: 0, label: 'red' },
+  { id: 1, label: 'green' },
+  { id: 2, label: 'pink' },
+];
+
 const mockFetchData = (ms) =>
-  new Promise((res) => setTimeout(() => res(['text1', 'text2', 'text3']), ms));
+  new Promise((res) => setTimeout(() => res(items), ms));
 
 const LoadingFills = () => {
   const [arr, setArr] = React.useState([]);
@@ -21,9 +27,9 @@ const LoadingFills = () => {
 
   return arr.length > 0 ? (
     <>
-      {arr.map((item, id) => (
-        <Fill key={item} name="loading-demo" id={id}>
-          {item}
+      {arr.map(({ id, label }) => (
+        <Fill key={id} name="loading-demo" id={id}>
+          <div className={`block ${label}`}>{label}</div>
         </Fill>
       ))}
     </>
@@ -31,12 +37,6 @@ const LoadingFills = () => {
     false
   );
 };
-
-const items = [
-  { id: 0, label: 'red' },
-  { id: 1, label: 'green' },
-  { id: 2, label: 'pink' },
-];
 
 const Test = ({ data }) =>
   data.map(({ id, label }) => {
