@@ -13,9 +13,7 @@ export class SlotFillManager {
     const currentFill = this.allFills[name];
 
     if (currentFill) {
-      if (!currentFill[id]) {
-        this.allFills[name] = { ...currentFill, [id]: content };
-      }
+      this.allFills[name][id] = content;
     } else {
       this.allFills[name] = { [id]: content };
     }
@@ -35,12 +33,13 @@ export class SlotFillManager {
 
   // Give fills to the slot.
   getFillForSlot = (name) => {
-    const fillById = this.allFills[name];
-    if (!fillById) {
-      return false;
-    }
+    const fillByName = this.allFills[name];
 
-    return <>{Object.values(fillById).map((render) => render())}</>;
+    return !fillByName ? (
+      false
+    ) : (
+      <>{Object.values(fillByName).map((render) => render())}</>
+    );
   };
 
   // Unsubscribe from the function of the renderer to avoid memory leaks.

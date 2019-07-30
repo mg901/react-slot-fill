@@ -1,6 +1,9 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
 import { storiesOf } from '@storybook/react';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import cx from 'classnames';
 import { Fill, Provider, Slot } from '../src';
 import './index.css';
 
@@ -14,11 +17,12 @@ const mockFetchData = (ms) =>
   new Promise((res) => setTimeout(() => res(items), ms));
 
 const LoadingFills = () => {
-  const [arr, setArr] = React.useState([]);
+  const [arr, setArr] = useState([]);
+  const [active, setActive] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
-      const result = await mockFetchData(2000);
+      const result = await mockFetchData(1000);
       setArr(result);
     };
 
@@ -27,14 +31,19 @@ const LoadingFills = () => {
 
   return arr.length > 0 ? (
     <>
-      {arr.map(({ id, label }) => (
-        <Fill key={id} name="loading-demo" id={id}>
-          <div className={`block ${label}`}>{label}</div>
-        </Fill>
+      {arr.map(({ id, label }, index) => (
+        <>
+          <Slot name={`loading-demo-${id}`} />
+          <Fill key={id} name={`loading-demo-${id}`} id={id}>
+            <div key={id} className={cx('block', label, { active })}>
+              {label}
+            </div>
+          </Fill>
+        </>
       ))}
     </>
   ) : (
-    false
+    <div>loading ...</div>
   );
 };
 
